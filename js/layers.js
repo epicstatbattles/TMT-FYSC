@@ -22,21 +22,21 @@ addLayer("subcount", {
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
-        {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "s", description: "s: Perform subscriber reset", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
 	
 	upgrades: {
         11: {
-            title: "Upload!",
-            description: "Post your first video. Gain 0.25 views per second!",
+            title: "Upload Your First Video!",
+            description: "Start your channel! Gain +0.25 views per second.",
             cost: new Decimal(5),
             effect() {
                 return new Decimal(0.25);
             },
-            effectDisplay() { return "+" + format(this.effect()) + "views/second"; },
+            effectDisplay() { return "+" + format(this.effect()) + " views/sec"; },
         },
-	},
+    },
     milestones: {
         0: {
             requirementDescription: "1000 Subscribers",
