@@ -40,7 +40,7 @@ addLayer("subcount", {
             title: "Post more videos!",
             description: "You really like posting videos! Gain a view boost based on subscribers.",
             cost: new Decimal(2),
-			unlocked() {return (hasUpgrade("subcount", 11);},
+			unlocked() {return hasUpgrade("subcount", 11);},
             effect() {
                 return player.subcount.points.add(1).pow(0.25);
             },
