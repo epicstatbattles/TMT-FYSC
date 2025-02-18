@@ -1,14 +1,14 @@
-addLayer("p", {
-    name: "prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
+addLayer("subcount", {
+    name: "subcount", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "S", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
-		points: new Decimal(0),
+	points: new Decimal(0),
     }},
-    color: "#4BDC13",
+    color: "#ff0000",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
-    resource: "prestige points", // Name of prestige currency
+    resource: "subscribers", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
@@ -24,5 +24,39 @@ addLayer("p", {
     hotkeys: [
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true}
-})
+    layerShown(){return true},
+	upgrades: {
+        11: {
+            title: "Upload!",
+            description: "Post your first video. Gain 0.25 views per second!",
+            cost: new Decimal(5),
+            effect() {
+                return new Decimal(16).pow(player.gal.points); // Complex multiplier
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
+        },
+    milestones: {
+        0: {
+            requirementDescription: "1000 Subscribers",
+            effectDescription: "Unlock Monetization!",
+            done() { return player.subs.points.gte(1000); },
+        },
+    },
+
+    tabFormat: {
+        "Main Tab": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "resource-display",
+                "upgrades",
+                "milestones",
+            ],
+        },
+        "About": {
+            content: [
+                ["raw-html", () => "The meme has entered galactic levels of fame!"],
+            ],
+        },
+    },
+});
