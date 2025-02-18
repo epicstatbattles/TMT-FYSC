@@ -58,7 +58,6 @@ addLayer("subcount", {
         "About": {
             content: [
                 ["raw-html", () => "The meme has entered galactic levels of fame!"],
-            ],
-        },
+        ],
     },
 });
