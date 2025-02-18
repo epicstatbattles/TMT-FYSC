@@ -25,6 +25,7 @@ addLayer("subcount", {
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
+	
 	upgrades: {
         11: {
             title: "Upload!",
@@ -35,6 +36,7 @@ addLayer("subcount", {
             },
             effectDisplay() { return "x" + format(this.effect()); },
         },
+	},
     milestones: {
         0: {
             requirementDescription: "1000 Subscribers",
