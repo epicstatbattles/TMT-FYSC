@@ -36,6 +36,26 @@ addLayer("subcount", {
             },
             effectDisplay() { return "+" + format(this.effect()) + " views/sec"; },
         },
+		12: {
+            title: "Post more videos!",
+            description: "You really like posting videos! Gain a view boost based on subscribers.",
+            cost: new Decimal(2),
+			unlocked() {return hasUpgrade("subs", 11);},
+            effect() {
+                return player.subcount.points.add(1).pow(0.25);
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
+        },
+		12: {
+            title: "Upload a short!",
+            description: "You make a short which isn't super OP yet but it's getting there. Boost base view gain by +0.25.",
+            cost: new Decimal(3),
+			unlocked() {return hasUpgrade("subs", 12);},
+            effect() {
+                return new Decimal(0.25);
+            },
+            effectDisplay() { return "+" + format(this.effect()) + " base views/sec"; },
+        },
     },
     milestones: {
         0: {
