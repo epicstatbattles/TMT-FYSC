@@ -32,7 +32,7 @@ addLayer("subcount", {
             description: "Post your first video. Gain 0.25 views per second!",
             cost: new Decimal(5),
             effect() {
-                return new Decimal(0.25); // Complex multiplier
+                return new Decimal(0.25);
             },
             effectDisplay() { return "+" + format(this.effect()) + "views/second"; },
         },
@@ -41,7 +41,7 @@ addLayer("subcount", {
         0: {
             requirementDescription: "1000 Subscribers",
             effectDescription: "Unlock Monetization!",
-            done() { return player.subs.points.gte(1000); },
+            done() { return player.subcount.points.gte(1000); },
         },
     },
 
