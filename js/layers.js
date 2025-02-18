@@ -30,7 +30,7 @@ addLayer("subcount", {
         11: {
             title: "Upload Your First Video!",
             description: "Start your channel! Gain +0.25 views per second.",
-            cost: new Decimal(5),
+            cost: new Decimal(1),
             effect() {
                 return new Decimal(0.25);
             },
