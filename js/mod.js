@@ -1,7 +1,7 @@
 let modInfo = {
-	name: "The ??? Tree",
-	author: "nobody",
-	pointsName: "points",
+	name: "Faking Your Sub Counts",
+	author: "Epic Stat Battles",
+	pointsName: "views",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
@@ -18,8 +18,8 @@ let VERSION = {
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+		- Added subscribers.<br>
+		- Added 1 upgrade.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -41,7 +41,8 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(1)
+	let gain = new Decimal(0);
+	if (hasUpgrade("subs", 11)) gain = gain.add(0.25);
 	return gain
 }
 
