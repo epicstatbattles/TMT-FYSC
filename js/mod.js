@@ -42,7 +42,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = new Decimal(0);
-	if (hasUpgrade("subs", 11)) gain = gain.add(0.25);
+	if (hasUpgrade("subcount", 11)) gain = gain.add(0.25);
 	return gain
 }
 
