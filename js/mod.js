@@ -12,11 +12,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
+	num: "0.0.1",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.0.1</h3><br>
+		- Added 2 more upgrades.<br>
 	<h3>v0.0</h3><br>
 		- Added subscribers.<br>
 		- Added 1 upgrade.`
@@ -43,6 +45,8 @@ function getPointGen() {
 
 	let gain = new Decimal(0);
 	if (hasUpgrade("subcount", 11)) gain = gain.add(0.25);
+	if (hasUpgrade("subcount", 13)) gain = gain.add(0.25);
+	if (hasUpgrade("subcount", 12)) gain = gain.times(upgradeEffect("subcount", 12));
 	return gain
 }
 
