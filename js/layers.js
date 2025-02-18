@@ -32,9 +32,9 @@ addLayer("subcount", {
             description: "Post your first video. Gain 0.25 views per second!",
             cost: new Decimal(5),
             effect() {
-                return new Decimal(16).pow(player.gal.points); // Complex multiplier
+                return new Decimal(0.25); // Complex multiplier
             },
-            effectDisplay() { return "x" + format(this.effect()); },
+            effectDisplay() { return "+" + format(this.effect()) + "views/second"; },
         },
 	},
     milestones: {
