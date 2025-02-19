@@ -7,7 +7,9 @@ addLayer("subcount", {
 	points: new Decimal(0),
     }},
     color: "#ff0000",
-    requires: new Decimal(10), // Can be a function that takes requirement increases into account
+    requires(){
+	let subrequirement=new Decimal(10);
+	if (hasUpgrade("subs", 25)) subrequirement = subrequirement.div(upgradeEffect("subs, 25));}, // Can be a function that takes requirement increases into account
     resource: "subscribers", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
@@ -16,6 +18,7 @@ addLayer("subcount", {
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1);
 		if (hasUpgrade("subcount", 21)) mult = mult.times(upgradeEffect("subcount", 21));
+		if (hasUpgrade("subcount", 24)) mult = mult.times(upgradeEffect("subcount", 24));
         return mult;
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -73,7 +76,7 @@ addLayer("subcount", {
             cost: new Decimal(5),
 			unlocked() {return hasUpgrade("subcount", 14);},
             effect() {
-                let subtime=new Decimal(player.subcount.resetTime)
+                let subtime=new Decimal(player.subcount.resetTime);
 				return subtime.div(100).add(1).pow(0.35);
             },
             effectDisplay() { return "x" + format(this.effect()); },
@@ -84,10 +87,50 @@ addLayer("subcount", {
             cost: new Decimal(10),
 			unlocked() {return hasUpgrade("subcount", 15);},
             effect() {
-                let subtime=new Decimal(player.subcount.resetTime)
+                let subtime=new Decimal(player.subcount.resetTime);
 				return subtime.div(200).add(1).pow(0.325);
             },
             effectDisplay() { return "x" + format(this.effect()); },
+        },
+		22: {
+            title: "The grind begins!",
+            description: "You become dedicated to making videos and a few shorts. Boost view gain based on total subs gained.",
+            cost: new Decimal(20),
+			unlocked() {return hasUpgrade("subcount", 21);},
+            effect() {
+				return player.subcount.total.div(5).add(1).pow(0.2);
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
+        },
+		23: {
+            title: "Going for monetization!",
+            description: "You decide you want to be monetized. Your best sub amount boosts view gain further.",
+            cost: new Decimal(50),
+			unlocked() {return hasUpgrade("subcount", 22);},
+            effect() {
+				return player.subcount.best.div(4.5).add(1).pow(0.2125);
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
+        },
+		24: {
+            title: "Retention Techniques!",
+            description: "You not only gain views, but keep your viewers locked in. Slightly boost sub gain based on their amount.",
+            cost: new Decimal(100),
+			unlocked() {return hasUpgrade("subcount", 23);},
+            effect() {
+				return player.subcount.points.div(10).add(1).pow(0.125);
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
+        },
+		25: {
+            title: "It's getting close!",
+            description: "You're within reach! Reduce the subscriber requirement based on their amount.",
+            cost: new Decimal(250),
+			unlocked() {return hasUpgrade("subcount", 24);},
+            effect() {
+				return player.subcount.points.div(50).add(1).pow(0.15);
+            },
+            effectDisplay() { return "/" + format(this.effect()); },
         },
     },
     milestones: {
@@ -110,7 +153,7 @@ addLayer("subcount", {
         },
         "About": {
             content: [
-                ["raw-html", () => "The meme has entered galactic levels of fame!"],
+                ["raw-html", () => "The start to your FYSC journey!"],
         	],
     	},
     },
