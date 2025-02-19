@@ -12,11 +12,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0.1",
-	name: "Literally nothing",
+	num: "0.0.2",
+	name: "Faking Your Sub Counts",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.0.2</h3><br>
+		- Added 3 more upgrades.<br>
 	<h3>v0.0.1</h3><br>
 		- Added 2 more upgrades.<br>
 	<h3>v0.0</h3><br>
@@ -46,6 +48,8 @@ function getPointGen() {
 	let gain = new Decimal(0);
 	if (hasUpgrade("subcount", 11)) gain = gain.add(0.25);
 	if (hasUpgrade("subcount", 13)) gain = gain.add(0.25);
+	if (hasUpgrade("subcount", 14)) gain = gain.add(upgradeEffect("subcount", 14));
+	if (hasUpgrade("subcount", 15)) gain = gain.times(upgradeEffect("subcount", 15));
 	if (hasUpgrade("subcount", 12)) gain = gain.times(upgradeEffect("subcount", 12));
 	return gain
 }
