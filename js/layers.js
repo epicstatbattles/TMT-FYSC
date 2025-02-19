@@ -9,7 +9,7 @@ addLayer("subcount", {
     color: "#ff0000",
     requires(){
 	let subrequirement=new Decimal(10);
-	if (hasUpgrade("subs", 25)) subrequirement = subrequirement.div(upgradeEffect("subs", 25));
+	if (hasUpgrade("subcount", 25)) subrequirement = subrequirement.div(upgradeEffect("subcount", 25));
 	return subrequirement;}, // Can be a function that takes requirement increases into account
     resource: "subscribers", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
