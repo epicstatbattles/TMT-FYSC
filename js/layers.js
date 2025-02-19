@@ -14,11 +14,12 @@ addLayer("subcount", {
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
-        mult = new Decimal(1)
-        return mult
+        mult = new Decimal(1);
+		if (hasUpgrade("subcount", 21)) mult = mult.times(upgradeEffect("subcount", 21));
+        return mult;
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
+        return new Decimal(1);
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -39,7 +40,7 @@ addLayer("subcount", {
 		12: {
             title: "Post more videos!",
             description: "You really like posting videos! Gain a view boost based on subscribers.",
-            cost: new Decimal(2),
+            cost: new Decimal(1),
 			unlocked() {return hasUpgrade("subcount", 11);},
             effect() {
                 return player.subcount.points.add(1).pow(0.25);
@@ -49,12 +50,44 @@ addLayer("subcount", {
 		13: {
             title: "Upload a short!",
             description: "You make a short which isn't super OP yet but it's getting there. Boost base view gain by +0.25.",
-            cost: new Decimal(3),
+            cost: new Decimal(2),
 			unlocked() {return hasUpgrade("subcount", 12);},
             effect() {
                 return new Decimal(0.25);
             },
             effectDisplay() { return "+" + format(this.effect()) + " base views/sec"; },
+        },
+		14: {
+            title: "Getting traction!",
+            description: "Boost base view gain based on their amount.",
+            cost: new Decimal(3),
+			unlocked() {return hasUpgrade("subcount", 13);},
+            effect() {
+                return player.points.add(1).pow(0.2).div(10);
+            },
+            effectDisplay() { return "+" + format(this.effect()) + " base views/sec"; },
+        },
+		15: {
+            title: "Add editing!",
+            description: "Start improving your videos with editing tools! View gain is multiplied based on time since last subscriber reset.",
+            cost: new Decimal(5),
+			unlocked() {return hasUpgrade("subcount", 14);},
+            effect() {
+                let subtime=new Decimal(player.subcount.resetTime)
+				return subtime.div(100).add(1).pow(0.35);
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
+        },
+		21: {
+            title: "New style!",
+            description: "Experiment with different video styles to see which one works best. Sub gain is multiplied based on time since last subscriber reset.",
+            cost: new Decimal(10),
+			unlocked() {return hasUpgrade("subcount", 15);},
+            effect() {
+                let subtime=new Decimal(player.subcount.resetTime)
+				return subtime.div(200).add(1).pow(0.325);
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
         },
     },
     milestones: {
