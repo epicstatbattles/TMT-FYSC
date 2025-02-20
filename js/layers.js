@@ -15,7 +15,7 @@ addLayer("subcount", {
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.48, // Prestige currency exponent
+    exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1);
         if (hasUpgrade("subcount", 21)) mult = mult.times(upgradeEffect("subcount", 21));
@@ -321,7 +321,7 @@ addLayer("money", {
 });
 addLayer("sacrifice", {
     name: "sacrifice", // This is optional, only used in a few places, If absent it just uses the layer id.
-    image: "https://i.ibb.co/dwKFwPdy/fire2.gif", // This appears on the layer's node as an image
+    image: "https://i.ibb.co/ccVvDNCq/bigfiremdm.gif", // This appears on the layer's node as an image
     position: 3, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
