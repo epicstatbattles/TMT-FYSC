@@ -321,7 +321,7 @@ addLayer("money", {
 });
 addLayer("sacrifice", {
     name: "sacrifice", // This is optional, only used in a few places, If absent it just uses the layer id.
-    image: "https://i.ibb.co/ccVvDNCq/bigfiremdm.gif", // This appears on the layer's node as an image
+    image: "https://lcedit.com/top50/mdm_gifs/red.gif", // This appears on the layer's node as an image
     position: 3, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
