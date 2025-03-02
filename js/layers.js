@@ -15,7 +15,7 @@ addLayer("subcount", {
     baseResource: "points", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 0.48, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1);
         if (hasUpgrade("subcount", 21)) mult = mult.times(upgradeEffect("subcount", 21));
@@ -23,6 +23,9 @@ addLayer("subcount", {
         if (hasUpgrade("money", 11)) mult = mult.times(upgradeEffect("money", 11));
         if (hasUpgrade("money", 13)) mult = mult.times(upgradeEffect("money", 13));
         if (hasUpgrade("money", 23)) mult = mult.times(upgradeEffect("money", 23));
+        if (hasUpgrade("sacrifice", 11)) mult = mult.times(upgradeEffect("sacrifice", 11));
+        if (hasUpgrade("prestige", 12)) mult = mult.times(upgradeEffect("prestige", 12));
+        if (player.subcount.points.gte(5000000)) mult = mult.div(player.subcount.points.div(5000000).pow(0.2));
         return mult;
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -150,16 +153,16 @@ addLayer("subcount", {
             done() { return player.subcount.points.gte(1000000); },
         },
         2: {
-            requirementDescription: "10000000 Subscribers",
+            requirementDescription: "50000000 Subscribers",
             effectDescription: "Unlock Prestige!",
             unlocked(){return hasMilestone("subcount", 1)},
-            done() { return player.subcount.points.gte(1e7); },
+            done() { return player.subcount.points.gte(5e7); },
         },
         3: {
-            requirementDescription: "365000000 Subscribers",
-            effectDescription: "Surpass MrBeast! Reward: Prestige gains are doubled.",
+            requirementDescription: "368000000 Subscribers",
+            effectDescription: "Surpass MrBeast! Reward: View gain is doubled.",
             unlocked(){return hasMilestone("subcount", 2)},
-            done() { return player.subcount.points.gte(3.65e8); },
+            done() { return player.subcount.points.gte(3.68e8); },
         },
     },
 
@@ -189,7 +192,9 @@ addLayer("money", {
     points: new Decimal(0),
     }},
     color: "#00ff00",
-    requires: new Decimal(1000),
+    requires(){let moneyrequirement = new Decimal(1000);
+        if (hasUpgrade("prestige", 13)) moneyrequirement = moneyrequirement.div(upgradeEffect("prestige", 13));
+            return moneyrequirement;},
     base: new Decimal(1.5),
     canBuyMax: false,
     resource: "money", // Name of prestige currency
@@ -201,6 +206,7 @@ addLayer("money", {
         mult = new Decimal(1);
         if (hasUpgrade("money", 14)) mult = mult.div(upgradeEffect("money", 14));
         if (hasUpgrade("money", 22)) mult = mult.div(upgradeEffect("money", 22));
+        if (hasUpgrade("sacrifice", 13)) mult = mult.div(upgradeEffect("sacrifice", 13));
         return mult;
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -296,9 +302,9 @@ addLayer("money", {
     },
     milestones: {
         0: {
-            requirementDescription: "1000 Money",
-            effectDescription: "Making Those Bucks!",
-            done() { return player.money.points.gte(1000); },
+            requirementDescription: "40 Money",
+            effectDescription: "Money boosts view gain based on its amount/10+1.",
+            done() { return player.money.points.gte(40); },
         },
     },
 
@@ -321,22 +327,24 @@ addLayer("money", {
 });
 addLayer("sacrifice", {
     name: "sacrifice", // This is optional, only used in a few places, If absent it just uses the layer id.
-    image: "https://i.ibb.co/DPH3bt7n/firesacrifice-1.gif", // This appears on the layer's node as an image
+    image: "https://i.ibb.co/d0thhY6z/bigfiresquaremdmsize95.gif", // This appears on the layer's node as an image
     position: 3, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: false,
     points: new Decimal(0),
     }},
     color: "#D54027",
-    requires(){return new Decimal(1000000).times(player.sacrifice.points.div(5).add(1));},
-    base: new Decimal(1.5),
+    requires(){return new Decimal(1000000).times(player.sacrifice.points.div(10).add(1).pow(1.25));},
+    effect(){return player.sacrifice.points.add(1).pow(0.2);},
+    effectDescription(){return "boosting view gain by x" + format(this.effect());},
     resource: "sacrifice", // Name of prestige currency
     baseResource: "subscribers", // Name of resource prestige is based on
     baseAmount() {return player.subcount.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent() {return new Decimal(7.27254).div(player.subcount.points.log10().sub(5).pow(3));}, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1);
+        if (hasUpgrade("prestige", 14)) mult = mult.times(upgradeEffect("prestige", 14));
         return mult;
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -347,17 +355,37 @@ addLayer("sacrifice", {
     hotkeys: [
         {key: "1", description: "1: Perform sacrifice", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return hasUpgrade("subcount", 25);},
+    layerShown(){return hasUpgrade("money", 23);},
 
     upgrades: {
         11: {
             title: "Performed the sacrifice!",
-            description: "Sacrifice some time and gain a boost to (view gain for now)",
-            cost: new Decimal(1),
+            description: "Use the sacrifice to build a multiplier to sub gain, starting at 1.25x.",
+            cost: new Decimal(5),
             effect() {
-                return new Decimal(2);
+                return player.sacrifice.points.add(1).pow(0.15).times(1.25);
             },
             effectDisplay() { return "x" + format(this.effect()); },
+        },
+        12: {
+            title: "Stronger Sacrifice!",
+            description: "This upgrade grants extra view gain based on sacrifice, at ^0.5 effect.",
+            cost: new Decimal(20),
+            unlocked() {return hasUpgrade("sacrifice", 11);},
+            effect() {
+                return player.sacrifice.points.add(1).pow(0.1);
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
+        },
+        13: {
+            title: "Sacrificial Investment!",
+            description: "Use your sacrifice to divide money requirement.",
+            cost: new Decimal(40),
+            unlocked() {return hasUpgrade("sacrifice", 12);},
+            effect() {
+                return player.sacrifice.points.add(1).pow(0.3);
+            },
+            effectDisplay() { return "/" + format(this.effect()); },
         },
     },
     milestones: {
@@ -380,7 +408,104 @@ addLayer("sacrifice", {
         },
         "About": {
             content: [
-                ["raw-html", () => "Monetization boosts your FYSC journey!"],
+                ["raw-html", () => "Sacrifice your views here to gain sacrifice points to boost progression!"],
+            ],
+        },
+    },
+});
+addLayer("prestige", {
+    name: "prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "P", // This appears on the layer's node.
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+    points: new Decimal(0),
+    }},
+    color: "#a130cf",
+    requires: new Decimal(50000000),
+    effect(){return player.prestige.points.add(1);},
+    effectDescription(){return "boosting view gain by x" + format(this.effect());},
+    resource: "prestige points", // Name of prestige currency
+    baseResource: "subscribers", // Name of resource prestige is based on
+    baseAmount() {return player.subcount.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.25, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1);
+        return mult;
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        return new Decimal(1);
+    },
+    row: 1, // Row the layer is in on the tree
+    branches: ["subcount", "money", "sacrifice"],
+    hotkeys: [
+        {key: "p", description: "p: Perform prestige", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return hasUpgrade("sacrifice", 13);},
+
+    upgrades: {
+        11: {
+            title: "Start over with new knowledge!",
+            description: "You reset your channel, but learned some things from your first channel, quadrupling view gain.",
+            cost: new Decimal(1),
+            effect() {
+                return new Decimal(4);
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
+        },
+        12: {
+            title: "Improved Subscription Tactics",
+            description: "Increase subscriber gain based on prestige points.",
+            cost: new Decimal(5),
+            unlocked() {return hasUpgrade("prestige", 11);},
+            effect() {
+                return player.prestige.points.div(2).add(1).pow(0.5);
+            },
+            effectDisplay() { return "x" + format(this.effect()); },
+        },
+        13: {
+            title: "Saving Strategy",
+            description: "Divide the BASE cost of money based on prestige points, allowing it to go below 1000.",
+            cost: new Decimal(20),
+            unlocked() {return hasUpgrade("prestige", 12);},
+            effect() {
+                return player.prestige.points.div(2).add(1);
+            },
+            effectDisplay() { return "/" + format(this.effect()); },
+        },
+        14: {
+            title: "Prestigious Sacrifice",
+            description: "Sacrifice gain increases based on prestige points.",
+            cost: new Decimal(50),
+            unlocked() {return hasUpgrade("prestige", 13);},
+            effect() {
+                return player.prestige.points.div(2).add(1).pow(0.2);
+            },
+            effectDisplay() { return "/" + format(this.effect()); },
+        },
+    },
+    milestones: {
+        0: {
+            requirementDescription: "1000 Money",
+            effectDescription: "Making Those Bucks!",
+            done() { return player.prestige.points.gte(1000); },
+        },
+    },
+
+    tabFormat: {
+        "Main Tab": {
+            content: [
+                "main-display",
+                "prestige-button",
+                "resource-display",
+                "upgrades",
+                "milestones",
+            ],
+        },
+        "About": {
+            content: [
+                ["raw-html", () => "Prestige points will drastically boost metrics but come at a large cost of resetting everything before it."],
             ],
         },
     },
