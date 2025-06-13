@@ -66,6 +66,12 @@ function getPointGen() {
 	if (hasUpgrade("money", 12)) gain = gain.times(upgradeEffect("money", 12));
 	if (hasUpgrade("money", 21)) gain = gain.times(upgradeEffect("money", 21));
 	if (hasUpgrade("money", 23)) gain = gain.times(upgradeEffect("money", 23));
+	if (hasMilestone("money", 0)) gain = gain.times(player.money.points.div(10).add(1));
+	if (hasMilestone("subcount", 3)) gain = gain.times(2);
+	gain = gain.times(player.sacrifice.points.add(1).pow(0.2));
+	if (hasUpgrade("sacrifice", 12)) gain = gain.times(upgradeEffect("sacrifice", 12));
+	if (hasUpgrade("prestige", 11)) gain = gain.times(upgradeEffect("prestige", 11));
+	gain = gain.times(player.prestige.points.add(1));
 	return gain
 }
 
