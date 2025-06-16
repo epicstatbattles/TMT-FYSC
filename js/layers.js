@@ -460,7 +460,7 @@ addLayer("prestige", {
             cost: new Decimal(5),
             unlocked() {return hasUpgrade("prestige", 11);},
             effect() {
-                return player.prestige.points.div(2).add(1).pow(0.5);
+                return player.prestige.points.div(1.5).add(1).pow(0.7);
             },
             effectDisplay() { return "x" + format(this.effect()); },
         },
@@ -480,7 +480,7 @@ addLayer("prestige", {
             cost: new Decimal(50),
             unlocked() {return hasUpgrade("prestige", 13);},
             effect() {
-                return player.prestige.points.div(2).add(1).pow(0.2);
+                return player.prestige.points.div(2).add(1).pow(0.5);
             },
             effectDisplay() { return "/" + format(this.effect()); },
         },
