@@ -12,7 +12,7 @@ addLayer("subcount", {
     if (hasUpgrade("subcount", 25)) subrequirement = subrequirement.div(upgradeEffect("subcount", 25));
     return subrequirement;}, // Can be a function that takes requirement increases into account
     resource: "subscribers", // Name of prestige currency
-    baseResource: "points", // Name of resource prestige is based on
+    baseResource: "views", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.48, // Prestige currency exponent
@@ -334,7 +334,7 @@ addLayer("sacrifice", {
     points: new Decimal(0),
     }},
     color: "#D54027",
-    requires(){return new Decimal(1000000).times(player.sacrifice.points.div(10).add(1).pow(2.5));},
+    requires(){return new Decimal(1000000).times(player.sacrifice.points.div(10).add(1).pow(1.5));},
     effect(){return player.sacrifice.points.add(1).pow(0.2);},
     effectDescription(){return "boosting view gain by x" + format(this.effect());},
     resource: "sacrifice", // Name of prestige currency
