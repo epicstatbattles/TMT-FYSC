@@ -341,7 +341,7 @@ addLayer("sacrifice", {
     baseResource: "subscribers", // Name of resource prestige is based on
     baseAmount() {return player.subcount.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent() {return new Decimal(7.27254).div(player.subcount.points.log10().sub(5).pow(3));}, // Prestige currency exponent
+    exponent: 0.8, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1);
         if (hasUpgrade("prestige", 14)) mult = mult.times(upgradeEffect("prestige", 14));
