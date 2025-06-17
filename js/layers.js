@@ -334,14 +334,14 @@ addLayer("sacrifice", {
     points: new Decimal(0),
     }},
     color: "#D54027",
-    requires(){return new Decimal(1000000).times(player.sacrifice.points.div(10).add(1).pow(1.25));},
+    requires(){return new Decimal(1000000).times(player.sacrifice.points.div(10).add(1).pow(2.5));},
     effect(){return player.sacrifice.points.add(1).pow(0.2);},
     effectDescription(){return "boosting view gain by x" + format(this.effect());},
     resource: "sacrifice", // Name of prestige currency
     baseResource: "subscribers", // Name of resource prestige is based on
     baseAmount() {return player.subcount.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.8, // Prestige currency exponent
+    exponent: 0.75, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1);
         if (hasUpgrade("prestige", 14)) mult = mult.times(upgradeEffect("prestige", 14));
