@@ -12,12 +12,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.2.1",
+	num: "0.2.2",
 	name: "Faking Your Sub Counts",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-        <h3>v0.2.1</h3><br>
+        <h3>v0.2.2</h3><br>
+	        - Adjusted Requirement formula for sacrifice points after the first.
+	<h3>v0.2.1</h3><br>
 	        - Adjusted Prestige Upgrade and Sacrifice exponent values<br>
 	<h3>v0.2 (The Major Update)</h3><br>
 	        - MAJOR UPDATE!!! Added Sacrifice and Prestige (3 sacrifice and 4 prestige upgrades)!!<br>
